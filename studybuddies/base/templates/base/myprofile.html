@@ -1,0 +1,33 @@
+{% extends 'main.html' %} 
+
+{% block content %}
+<style>
+    .profile-wrapper{
+        display:grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style> 
+<div class="profile-wrapper">
+    <div>
+        <h3>Browse Topics</h3>
+        <a href = "{% url 'home-view' %}">All</a><br>
+        {% for item in all_topics %} 
+        <a href="{% url 'home-view'%}?q={{item.name}}">{{item.name}}</a><br>
+        {% endfor %}
+    </div>
+    <div><h1><center>{{user.username}}</center></h1>
+        {% for room in rooms %} 
+        <p>{{room.name}}</p>
+        {% endfor %}
+    </div>
+    <div><h3>Activity Monitor</h3>
+    {% for message in all_messages %} 
+    <pre>{{message.user}} {{message.created |timesince}} ago
+@{{message.user}}</pre>
+<p>{{message.body}}</p>
+{% endfor %}
+</div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+{% block content %}
+<style>
+    .comments{
+        display:grid;
+        grid-template-columns: 3fr 1fr;
+    }
+</style>
+<h1>Room Template</h1>
+<h3>Description:<pre style="font-family:ariel">{{brand.description}} </pre><br> Data id:{{brand.id}}</h3>
+<div class="comments">
+<div class="comment-wrapper">
+    <h3> Conversation </h3>
+    <hr >
+    {% for message in all_messages %}
+        {% if request.user == message.user %}
+        @{{message.user}} {{message.created | timesince}} <a href="{% url 'del_message' message.id%}"> Delete</a>
+        {% else %} 
+        @{{message.user}} {{message.created | timesince}}
+        {% endif %}
+        <hr>
+        {{message}}
+        <hr>
+    {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %} 
+        <input type="text" name="body" id="body" placeholder="type message here...">
+    </form>
+</div>
+<div class="participants">
+    <h3>Participants<h3>
+        <hr>
+    {% for person in participants %}
+     @{{person}}
+    {% endfor %}
+</div>
+</div>
+
+{% endblock content %}

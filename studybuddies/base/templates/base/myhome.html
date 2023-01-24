@@ -1,0 +1,50 @@
+{% extends 'main.html' %} 
+
+{% block content %}
+<style>
+    .home-container{
+        display:grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+
+
+<div class="home-container">
+    <div class="browse-topics">
+        <h3>Browse Topics</h3>
+        <a href="{% url 'home-view' %}">All</a><br>
+        {% for topic in topics %}
+            <a href="{% url 'home-view' %}?q={{topic.name}}">{{topic.name}}</a><br>
+        {% endfor %}
+    </div>
+    <div class="all_rooms">
+            <h3>{{statistics.count}} rooms available!</h3>
+            <a href="{% url 'create-room' %}">Create Room</a>
+            <hr>
+            {% for item in statistics %}
+            <hr>
+            {% if request.user == item.host %}
+            <button><a href="{% url 'update-room' item.id %}">Edit Room</a></button>
+            <button><a href="{% url 'delete-room' item.id %}">Delete Post</a></button>
+            {% endif %}
+                <span><a href="{% url 'profile-view' item.host.id %}">@{{item.host.username}}</a></span>
+                <h3> <a href="{% url 'detail-view' item.id %}">{{item.description}}</a></h3>
+                <small>{{item.name}}</small>
+                <hr>
+                {% endfor%}
+        
+    </div>
+    <div class="activity-feed">
+        <h3>Recent Activity</h3>
+        {% for post in recent_post %} 
+        <pre>{{post.user}}
+@{{post.user}}</pre>
+        <p>replied to the post "{{post.room.name}}"</p>
+        <p>{{post.body}}</p>
+        <hr>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}
